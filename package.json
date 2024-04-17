@@ -1,0 +1,15 @@
+{
+  "name": "gcp-test-app-engine-node",
+  "version": "1.0.0",
+  "description": "node app for app engine test",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "yuichi sugiyama",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
