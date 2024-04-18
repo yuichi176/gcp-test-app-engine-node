@@ -22,7 +22,7 @@ jobs:
         id: create_version_name
         uses: actions/github-script@v6
         env:
-          BRANCH_NAME: ${{ github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref }}
         with:
           result-encoding: string
           script: |
