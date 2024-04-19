@@ -8,8 +8,16 @@ on:
       - develop
 
 jobs:
+  generate-version-name:
+    name: Generate Version Name
+    uses: ./.github/workflows/_generate-version-name.yml
+    with:
+      BRANCH_NAME: ${{ github.head_ref }}
+
   delete:
     runs-on: ubuntu-latest
+    needs:
+      - generate-version-name
     steps:
       - uses: actions/checkout@v3
 
@@ -19,24 +27,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Create Version Name from Branch Name
-        id: create_version_name
-        uses: actions/github-script@v6
-        env:
-          BRANCH_NAME: ${{ github.head_ref }}
-        with:
-          result-encoding: string
-          script: |
-            try {
-              const versionName = process.env.BRANCH_NAME.replaceAll('/', '-')
-              return versionName
-            } catch (error) {
-              core.error("Failed to create version name")
-              core.setFailed(error)
-            }
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Delete Preview Version
-        run: gcloud app services delete default --quiet --project=gcp-test-420611 --version=${{ steps.create_version_name.outputs.result }}
+        run: gcloud app services delete default --quiet --project=gcp-test-420611 --version=${{ needs.generate-version-name.outputs.version_name }}

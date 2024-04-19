@@ -1,0 +1,35 @@
+name: GENERATE_VERSION_NAME
+
+on:
+  workflow_call:
+    inputs:
+      BRANCH_NAME:
+        description: 'Branch Name'
+        required: true
+        type: string
+    outputs:
+      version_name:
+        value: ${{ jobs.generate_version_name.outputs.version_name }}
+
+jobs:
+  generate-version-name:
+    name: Generate Version Name
+    runs-on: ubuntu-latest
+    outputs:
+        version_name: ${{ steps.generate_version_name.outputs.result }}
+    steps:
+      - name: Generate Version Name from Branch Name
+        id: generate_version_name
+        uses: actions/github-script@v6
+        env:
+          BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+        with:
+          result-encoding: string
+          script: |
+            try {
+              const versionName = process.env.BRANCH_NAME.replaceAll('/', '-')
+              return versionName
+            } catch (error) {
+              core.error("Failed to create version name")
+              core.setFailed(error)
+            }
