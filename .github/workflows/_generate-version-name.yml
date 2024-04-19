@@ -1,4 +1,4 @@
-name: GENERATE_VERSION_NAME
+name: _GENERATE_VERSION_NAME
 
 on:
   workflow_call:

@@ -27,22 +27,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Create Version Name from Branch Name
-        id: create_version_name
-        uses: actions/github-script@v6
-        env:
-          BRANCH_NAME: ${{ github.head_ref }}
-        with:
-          result-encoding: string
-          script: |
-            try {
-              const versionName = process.env.BRANCH_NAME.replaceAll('/', '-')
-              return versionName
-            } catch (error) {
-              core.error("Failed to create version name")
-              core.setFailed(error)
-            }
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
