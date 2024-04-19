@@ -9,6 +9,10 @@ app.get('/test', (req, res) => {
     res.send('Hello test!');
 });
 
+app.get('/test-2', (req, res) => {
+    res.send('Hello test2!');
+});
+
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
