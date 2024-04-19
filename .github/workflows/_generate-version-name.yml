@@ -9,12 +9,14 @@ on:
         type: string
     outputs:
       version_name:
-        value: ${{ steps.generate_version_name.outputs.result }}
+        value: ${{ jobs.generate_version_name.outputs.version_name }}
 
 jobs:
   generate-version-name:
     name: Generate Version Name
     runs-on: ubuntu-latest
+    outputs:
+      version_name: ${{ steps.generate_version_name.outputs.result }}
     steps:
       - name: Generate Version Name from Branch Name
         id: generate_version_name
