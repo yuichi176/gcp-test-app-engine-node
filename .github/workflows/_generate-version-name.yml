@@ -9,17 +9,17 @@ on:
         type: string
     outputs:
       version_name:
-        value: ${{ jobs.generate_version_name.outputs.version_name }}
+        value: ${{ jobs.generate-version-name.outputs.version_name }}
 
 jobs:
   generate-version-name:
     name: Generate Version Name
     runs-on: ubuntu-latest
     outputs:
-      version_name: ${{ steps.generate_version_name.outputs.result }}
+      version_name: ${{ steps.generate.outputs.result }}
     steps:
       - name: Generate Version Name from Branch Name
-        id: generate_version_name
+        id: generate
         uses: actions/github-script@v6
         env:
           BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
@@ -28,6 +28,7 @@ jobs:
           script: |
             try {
               const versionName = process.env.BRANCH_NAME.replaceAll('/', '-')
+              console.log(versionName)
               return versionName
             } catch (error) {
               core.error("Failed to create version name")
