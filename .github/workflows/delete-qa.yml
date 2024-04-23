@@ -9,7 +9,7 @@ jobs:
     name: Generate Version Name
     uses: ./.github/workflows/_generate-version-name.yml
     with:
-      BRANCH_NAME: ${{ github.head_ref }}
+      BRANCH_NAME: ${{ github.event.ref }}
 
   delete:
     if: startsWith(github.event.ref, 'qa/')
