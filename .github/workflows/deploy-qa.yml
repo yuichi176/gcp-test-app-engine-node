@@ -10,7 +10,7 @@ jobs:
     name: Generate Version Name
     uses: ./.github/workflows/_generate-version-name.yml
     with:
-      BRANCH_NAME: ${{ github.head_ref }}
+      BRANCH_NAME: ${{ github.ref_name }}
 
   deploy:
     runs-on: ubuntu-latest
