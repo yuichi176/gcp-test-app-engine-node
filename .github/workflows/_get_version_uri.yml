@@ -1,10 +1,10 @@
-name: _GET_VERSION_URI
+name: _GET_VERSION_URL
 
 on:
   workflow_dispatch:
 
 jobs:
-  get-version-uri:
+  get-version-url:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,31 +16,33 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '472.0.0'
 
-      - name: Get GAE URI
-        id: getGAEURI
+      - name: Get GAE URL
+        id: getGAEURL
         run: |
           VERSION_NAME=$(echo ${{ github.ref_name }} | perl -pe "s/[^A-Za-z0-9\n]/-/g;" | cut -c 1-63)
-          EXPECTED_URI="https://$VERSION_NAME-dot-gcp-test-420611.an.r.appspot.com"
-          VERSION_URI=$(gcloud app versions list --filter="id=$VERSION_NAME" --uri)
-          if [[ "$VERSION_URI" == "$EXPECTED_URI" ]]; then
-            echo "Found version, setting Version URI"
-            echo "apiUri=$VERSION_URI" >> $GITHUB_OUTPUT
+          OUTPUT=$(gcloud app versions list --filter="id=$VERSION_NAME" --uri)
+          echo "Command Output: $OUTPUT"
+          if [[ "$OUTPUT" == "Listed 0 items." ]]; then
+            echo "No URL Found, Setting Default URL"
+            echo "apiUrl=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
           else
-            echo "No version found, setting default URI"
-            echo "apiUri=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
+            echo "Found version, setting Version URL"
+            echo "apiUrl=$OUTPUT" >> $GITHUB_OUTPUT
           fi
 
-      - name: Display URI
-        run: echo "${{ steps.getGAEURI.outputs.apiUri }}"
+      - name: Display URL
+        run: echo "${{ steps.getGAEURL.outputs.apiUrl }}"
 
-      - name: Build with Default calchez-backend URI
-        if: steps.getGAEURI.outputs.apiUri == 'https://gcp-test-420611.an.r.appspot.com'
+      - name: Build with Default calchez-backend URL
+        if: steps.getGAEURL.outputs.apiUrl == 'https://gcp-test-420611.an.r.appspot.com'
         run: |
-          echo "Build with Default URI!"
+          echo "Build with Default URL!"
 
-      - name: Build with Specific calchez-backend URI
-        if: steps.getGAEURI.outputs.apiUri != 'https://gcp-test-420611.an.r.appspot.com'
+      - name: Build with Specific calchez-backend URL
+        if: steps.getGAEURL.outputs.apiUrl != 'https://gcp-test-420611.an.r.appspot.com'
         run: |
-          echo "Build with Specific URI!"
+          echo "Build with Specific URL"
