@@ -34,3 +34,13 @@ jobs:
 
       - name: Display URI
         run: echo "${{ steps.getGAEURI.outputs.apiUri }}"
+
+      - name: Build with Default calchez-backend URI
+        if: steps.getGAEURI.outputs.apiUri == 'https://gcp-test-420611.an.r.appspot.com'
+        run: |
+          echo "Build with Default URI!"
+
+      - name: Build with Specific calchez-backend URI
+        if: steps.getGAEURI.outputs.apiUri != 'https://gcp-test-420611.an.r.appspot.com'
+        run: |
+          echo "Build with Specific URI!"
