@@ -26,15 +26,17 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Get GAE Version URI
-        id: getGAEVersionURI
+      - name: Get GAE URI
+        id: getGAEURI
         run: |
           VERSION_URI=$(gcloud app versions list --filter="id=${{ needs.generate-version-name.outputs.version_name }}" --uri)
-          if [[ "$OUTPUT" == "Listed 0 items." ]]; then
-            echo "apiDomain=glb.devchez.com" >> $GITHUB_OUTPUT
+          if [[ "$VERSION_URI" == "Listed 0 items." ]]; then
+            echo "No version found, setting default URI"
+            echo "apiDomain=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
           else
-            echo "apiDomain=$API_VERSION_URI" >> $GITHUB_OUTPUT
+            echo "Found version, setting Version URI"
+            echo "apiDomain=$VERSION_URI" >> $GITHUB_OUTPUT
           fi
 
-      - name: Display VERSION_URI
+      - name: Display URI
         run: echo ${{ steps.getGAEVersionURI.outputs.result }}
