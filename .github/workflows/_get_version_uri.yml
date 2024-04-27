@@ -32,11 +32,11 @@ jobs:
           VERSION_URI=$(gcloud app versions list --filter="id=${{ needs.generate-version-name.outputs.version_name }}" --uri)
           if [[ "$VERSION_URI" == "Listed 0 items." ]]; then
             echo "No version found, setting default URI"
-            echo "apiDomain=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
+            echo "apiUri=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
           else
             echo "Found version, setting Version URI"
-            echo "apiDomain=$VERSION_URI" >> $GITHUB_OUTPUT
+            echo "apiUri=$VERSION_URI" >> $GITHUB_OUTPUT
           fi
 
       - name: Display URI
-        run: echo "${{ steps.getGAEURI.outputs.result }}"
+        run: echo "${{ steps.getGAEURI.outputs.apiUri }}"
