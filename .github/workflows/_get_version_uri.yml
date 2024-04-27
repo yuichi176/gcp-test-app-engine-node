@@ -21,7 +21,7 @@ jobs:
       - name: Get GAE URI
         id: getGAEURI
         run: |
-          VERSION_NAME=$(echo ${{ github.head_ref }} | perl -pe "s/[^A-Za-z0-9\n]/-/g;" | cut -c 1-63)
+          VERSION_NAME=$(echo ${{ github.ref_name }} | perl -pe "s/[^A-Za-z0-9\n]/-/g;" | cut -c 1-63)
           echo "Version Name: $VERSION_NAME"
           EXPECTED_URI="https://$VERSION_NAME-dot-gcp-test-420611.an.r.appspot.com"
           VERSION_URI=$(gcloud app versions list --filter="id=$VERSION_NAME" --uri)
