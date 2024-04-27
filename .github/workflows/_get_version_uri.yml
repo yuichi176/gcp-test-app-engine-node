@@ -6,8 +6,6 @@ on:
 jobs:
   get-version-uri:
     runs-on: ubuntu-latest
-    needs:
-      - generate-version-name
     steps:
       - uses: actions/checkout@v3
 
