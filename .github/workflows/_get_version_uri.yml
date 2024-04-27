@@ -29,13 +29,14 @@ jobs:
       - name: Get GAE URI
         id: getGAEURI
         run: |
+          EXPECTED_URI="https://${{ needs.generate-version-name.outputs.version_name }}-dot-gcp-test-420611.an.r.appspot.com"
           VERSION_URI=$(gcloud app versions list --filter="id=${{ needs.generate-version-name.outputs.version_name }}" --uri)
-          if [[ "$VERSION_URI" == "Listed 0 items." ]]; then
-            echo "No version found, setting default URI"
-            echo "apiUri=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
-          else
+          if [[ "$VERSION_URI" == "$EXPECTED_URI" ]]; then
             echo "Found version, setting Version URI"
             echo "apiUri=$VERSION_URI" >> $GITHUB_OUTPUT
+          else
+            echo "No version found, setting default URI"
+            echo "apiUri=https://gcp-test-420611.an.r.appspot.com" >> $GITHUB_OUTPUT
           fi
 
       - name: Display URI
