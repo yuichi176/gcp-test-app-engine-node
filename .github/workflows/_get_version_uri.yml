@@ -39,4 +39,4 @@ jobs:
           fi
 
       - name: Display URI
-        run: echo "${{ steps.getGAEVersionURI.outputs.result }}"
+        run: echo ${{ steps.getGAEURI.outputs.result }}
