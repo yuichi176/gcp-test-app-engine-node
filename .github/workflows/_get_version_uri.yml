@@ -24,7 +24,7 @@ jobs:
         id: getGAEURL
         run: |
           VERSION_NAME=$(echo ${{ github.ref_name }} | perl -pe "s/[^A-Za-z0-9\n]/-/g;" | cut -c 1-63)
-          OUTPUT=$(gcloud app versions list --filter="id=$VERSION_NAME" --uri)
+          OUTPUT=$(gcloud app versions list --filter="id=${VERSION_NAME}" --uri)
           echo "Command Output: $OUTPUT"
           if [[ "$OUTPUT" == "Listed 0 items." ]]; then
             echo "No URL Found, Setting Default URL"
