@@ -2,6 +2,7 @@
 
 echo $BRANCH_NAME
 
+
 ARG_ENV=$1
 case "$ARG_ENV" in
 "preview")
