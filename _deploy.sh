@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo $(git rev-parse --abbrev-ref HEAD)
+
 ARG_ENV=$1
 case "$ARG_ENV" in
 "preview")
