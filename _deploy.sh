@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "ARG_ENV: $1"
+
 ARG_ENV=$1
 case "$ARG_ENV" in
 "preview")
