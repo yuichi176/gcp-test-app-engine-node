@@ -12,11 +12,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  generate-version-name:
-    name: Generate Version Name
-    uses: ./.github/workflows/_generate-version-name.yml
-    with:
-      BRANCH_NAME: ${{ github.head_ref }}
+#  generate-version-name:
+#    name: Generate Version Name
+#    uses: ./.github/workflows/_generate-version-name.yml
+#    with:
+#      BRANCH_NAME: ${{ github.head_ref }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -39,3 +39,5 @@ jobs:
 
       - name: Deploy
         run: ./_deploy.sh preview
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
